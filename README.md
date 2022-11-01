@@ -1,4 +1,4 @@
-# signatures
+# signatures adatok a master branch ben vannak. 
 
 - [TP] ugyfel felvetele adminban
 
