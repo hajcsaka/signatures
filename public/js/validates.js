@@ -8,17 +8,42 @@ const email = document.querySelector("#email");
 const emailServer = document.querySelector("#emailServer");
 const endTime = document.querySelector("#endTime");
 
+const date = new Date();
+
+// Reset a Date's time to midnight
+date.setHours(0, 0, 0, 0);
+
+// Format a date to YYYY-MM-DD (or any other format)
+function padTo2Digits(num) {
+  return num.toString().padStart(2, '0');
+}
+
+function formatDate(date) {
+  return [
+    date.getFullYear(),
+    padTo2Digits(date.getMonth() + 1),
+    padTo2Digits(date.getDate()),
+  ].join('-');
+}
+
+// 👇️ 2022-01-18 (yyyy-mm-dd)
+const currentDate = formatDate(new Date());
+//console.log("current date : " + currentDate);
+
+
 btn.onclick = () => {
   const taxInput = taxNumber.value;
+  const taxInputTrimmed = taxInput.trim();
   const firmNameInput = firmName.value;
   const merchantNameInput = merchantName.value; 
   const locationInput = locationName.value; 
   const emailInput = email.value;  
   const taxPatt =  /^(\d{7})(\d)\-([1-5])\-(0[2-9]|[13][0-9]|2[02-9]|4[0-4]|51)$/g;
-  const taxResults = taxInput.match(taxPatt);
+  const taxResults = taxInputTrimmed.match(taxPatt);
   const accountInput = accountnumber.value;
+  const accountInputTrimmed = accountInput.trim();
   const accuontPatt = /^(\d{8})-\d{8}\-\d{8}$/g;
-  const accountResults = accountInput.match(accuontPatt);
+  const accountResults = accountInputTrimmed.match(accuontPatt);
   const emailServerInput = emailServer.value;
   const serverPatt = /^[a-z]+\.[a-z]{2,3}$/g;
   const emailServerResults = emailServerInput.match(serverPatt); 
@@ -45,12 +70,13 @@ btn.onclick = () => {
   //taxNUber validate section start);
   const valTax = taxResults != null;
   if (valTax != true) {
-    const taxNumberField = (document.getElementById("taxNumber").style.color =
-      "red");
-    alert("nem megfelelő formátum");
+     document.getElementById("taxNumber").style.color =
+      "red";
+    alert("nem megfelelő adószám formátum");
+   
   } else if (valTax == true) {
-    let taxNumberField = (document.getElementById("taxNumber").style.color =
-      "black");
+    document.getElementById("taxNumber").style.color =
+      "black";
      }
   //taxNUber validate section end);
 
@@ -84,12 +110,13 @@ btn.onclick = () => {
     // e-mailSerever validate section end);
 
     // Szerződés kezdeti ideje validáció start;
-    if (endTimeInput  === "") {
-      alert(" kérlek válaszd  ki a szolgálatatás kezdeti dátumát is");
+    if (endTimeInput  === "" || endTimeInput < currentDate) {
+           
+      alert(" A szolgáltatás kezdeti idejének napja nem lehet kisebb mint a mai nap :D ");
     } else {
       
     }
-
+    console.log("endTime = " + endTimeInput);
     // Szerződés kezdeti ideje validáció end;
 
 };
