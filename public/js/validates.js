@@ -81,6 +81,19 @@ btn.onclick = () => {
   //taxNUber validate section end);
 
   //account validate section start);
+  function errorMessage() {
+		var error = document.getElementById("error")
+		if (isNaN(document.getElementById("number").value))
+		{
+			
+			// Changing content and color of content
+			error.textContent = "Please enter a valid number"
+			error.style.color = "red"
+		} else {
+			error.textContent = ""
+		}
+	}
+
   const valAccount = accountResults != null;
   if (valAccount != true) {
     let accountNumberField = (document.getElementById("bank_acount_numer").style.color =

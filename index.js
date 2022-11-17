@@ -1,26 +1,179 @@
-function checkTaxNumber(taxNumber) {
-    var pattern = /^(\d{7})(\d)\-([1-5])\-(0[2-9]|[13][0-9]|2[02-9]|4[0-4]|51)$/;
-    var matches = taxNumber.match(pattern);
-    if (matches) {
-        
-        var mul = [9, 7, 3, 1, 9, 7, 3];
-       
-        var base = matches[1].split("");
-       
-        var check = parseInt(matches[2]);
-     
-        var sum = 0;
-        for (var i = 0; i < 7; i++) { sum += parseInt(base[i]) * mul[i]; }
+/*
+    erőforrás:
+             datas {
+                id: sting
+                name: string: 
+                merchantName : string
+                workLocation : string
+                taxNumber : string
+                banAccountNumber: string
+                email: string
+                emailServer : string
+                checkbox: boolean ?
+                endTime: string 
+             }
+*/
+
+
+
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
+const fs = require("fs");
+
+
+app.use(express.static("public"));
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/views/index.html"); 
+});
+
+
+
+// read
+
+app.get('/datas', (req,res) =>{
+
+    fs.readFile('./data/datas.json',(err, file) =>{
+         
+            res.send(file);
+        });
+      
+
+});
+
+// read by Id
+
+app.get('/datas/:egyediAzonosito', (req,res) =>{
+   
+   const id = req.params.egyediAzonosito; 
+
+   fs.readFile('./data/datas.json',(err, file) => {
+
+    const datas = JSON.parse(file);
+
+      const dataById = datas.find(data => data.id === id );
+
+      if (!dataById){
+        res.status(404);
+        res.send({error: `id: ${id} not found`});
+        return;
+      }
+
+    console.log(dataById);
+    res.send(dataById);
+
+   })
+   
+   
+
+});
+
+// create
+app.post('/datas', bodyParser.json(), (req,res) =>{
+
     
-        var last = sum % 10;
-      
-        if (last > 0) { last = 10 - last; }
-      
-        return last === check;
+    const newData = {
+         id: uuidv4(),
+         name: sanitizeString(req.body.name),
+         merchantName : sanitizeString(req.body.merchantName),
+         workLocation: sanitizeString(req.body.workLocation),
+         taxNumber : sanitizeString(req.body.taxNumber),
+         banAccountNumber:sanitizeString(req.body.banAccountNumber),
+         email: sanitizeString(req.body.email),
+         emailServer : sanitizeString(req.body.emailServer),
+         checkbox: Boolean(req.body.checkbox),
+         endTime: sanitizeString(req.body.endTime),
+
     }
-    return false;
+    fs.readFile('./data/datas.json',(err, file) =>{
+         const datas = JSON.parse(file);
+         datas.push(newData);
+         fs.writeFile('./data/datas.json', JSON.stringify(datas), (err)=> {
+             res.send(newData);
+         })
+          
+    })
+   
+});
+
+// update
+
+app.put('/datas/:egyediAzonosito',bodyParser.json(), (req, res) => {
+    const id = req.params.egyediAzonosito;
+
+    fs.readFile('./data/datas.json', (err, file) => {
+        const datas = JSON.parse(file);
+        const dataIndexById = datas.findIndex(data => data.id === id);
+
+        if(dataIndexById === -1) {
+            res.status(404);
+            res.send({error: `id: ${id} not found`});
+            return;
+        }
+
+        const updatedData = {
+            id: id,
+            name: sanitizeString(req.body.name),
+            merchantName : sanitizeString(req.body.merchantName),
+            workLocation: sanitizeString(req.body.workLocation),
+            taxNumber : sanitizeString(req.body.taxNumber),
+            banAccountNumber:sanitizeString(req.body.banAccountNumber),
+            email: sanitizeString(req.body.email),
+            emailServer : sanitizeString(req.body.emailServer),
+            checkbox: Boolean(req.body.checkbox),
+            endTime: sanitizeString(req.body.endTime),
+          };
+
+          datas[dataIndexById] = updatedData; 
+
+        fs.writeFile('./data/datas.json', JSON.stringify(datas), () => {
+            res.send(updatedData);
+        });
+    });
+});
+ 
+ 
+// delete
+
+app.delete('/datas/:egyediAzonosito', (req,res) =>{
+     
+        const id = req.params.egyediAzonosito;
+    
+        fs.readFile('./data/datas.json', (err, file) => {
+            const datas = JSON.parse(file);
+            const dataIndexById = datas.findIndex(data => data.id === id);
+    
+            if(dataIndexById === -1) {
+                res.status(404);
+                res.send({error: `id: ${id} not found`});
+                return;
+            };
+    
+            
+    
+            datas.splice(dataIndexById,1);
+    
+            fs.writeFile('./data/datas.json', JSON.stringify(datas), () => {
+                res.send({id : id});
+            });
+        });
+    });
+     
+    
+
+
+app.listen(3000);
+
+function sanitizeString(str) {
+  str = str.replace(/[^a-z0-9áéíóúñü \.,_-]/gim, "");
+  return str.trim();
 }
 
- 
-
- 
+function uuidv4() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    var r = (Math.random() * 16) | 0,
+      v = c == "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
