@@ -25,7 +25,7 @@ const fs = require("fs");
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/views/index.html"); 
+  res.sendFile(__dirname + "/views/index.html");
 });
 
 
@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 app.get('/datas', (req,res) =>{
 
     fs.readFile('./data/datas.json',(err, file) =>{
-         
+          
             res.send(file);
         });
       
@@ -83,7 +83,7 @@ app.post('/datas', bodyParser.json(), (req,res) =>{
          email: sanitizeString(req.body.email),
          emailServer : sanitizeString(req.body.emailServer),
          checkbox: Boolean(req.body.checkbox),
-         endTime: sanitizeString(req.body.endTime),
+         //endTime: req.body.endTime),
 
     }
     fs.readFile('./data/datas.json',(err, file) =>{
@@ -122,7 +122,7 @@ app.put('/datas/:egyediAzonosito',bodyParser.json(), (req, res) => {
             email: sanitizeString(req.body.email),
             emailServer : sanitizeString(req.body.emailServer),
             checkbox: Boolean(req.body.checkbox),
-            endTime: sanitizeString(req.body.endTime),
+           // endTime: sanitizeString(req.body.endTime),
           };
 
           datas[dataIndexById] = updatedData; 

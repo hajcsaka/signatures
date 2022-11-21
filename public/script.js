@@ -69,19 +69,8 @@ var state = {
           <input class="form-control" type="text" name="emailServer" value="${
             founddata.emailServer  
           }">
-        </label>
-        <label class="w-100">
-        Otp Simple integráció:
-          <input class="form-control" type="text" name="checkbox" value="${
-            founddata.checkbox
-          }">
-        </label>
-        <label class="w-100">
-        A szolgáltatás kezdete:
-          <input class="form-control" type="text" name="endTime" value="${
-            founddata.endTime
-          }">
-        </label>
+           
+        
        
         <button class="btn btn-primary" type="submit">Küldés</button>
       </form>
@@ -100,8 +89,8 @@ var state = {
     var email = event.target.elements.email.value;
     var emailServer = event.target.elements.emailServer.value;
     console.log(emailServer);
-    var checkbox = event.target.elements.checkbox.value; 
-    var endTime = event.target.elements.endTime.checked;
+    //var checkbox = event.target.elements.checkbox.value; 
+    //var endTime = event.target.elements.endTime.checked;
   
       const body = {
         name: name, 
@@ -111,11 +100,11 @@ var state = {
         banAccountNumber: banAccountNumber,
         email: email,
         emailServer : emailServer,
-        checkbox:  checkbox,
-        endTime: endTime,
+        //checkbox:  checkbox,
+        //endTime: endTime,
       }; 
   
-      const res = await fetch(`/datas/${state.editedId}`, {
+      const res = await fetch(`/datas/${state.editedId}`, { 
         method: "PUT",
         body: JSON.stringify(body),
         headers: {
@@ -156,8 +145,9 @@ var state = {
             <p>${data.taxNumber}</p>
             <p>${data.banAccountNumber}</p>
             <p>${data.email + '@' + data.emailServer}</p>
-            <p>${data.checkbox}</p>
-            <p>${data.endTime}</p>
+             
+          
+             
             <button class="btn btn-warning float-right edit-data mb-2" data-dataid="${
               data.id
             }">
@@ -210,20 +200,27 @@ var state = {
   // adatok felvitele
   
 
-  document.getElementById("btn").onsubmit = async function (event) {
+  document.getElementById("form").onsubmit = async function (event) {
     event.preventDefault();
 
    
     var name = event.target.elements.name.value;
-    console.log('name');
+    console.log(name);
     var merchantName = event.target.elements.merchantName.value;
+    console.log(merchantName );
     var workLocation = event.target.elements.workLocation.value;
+    console.log(workLocation);
     var taxNumber = event.target.elements.taxNumber.value;
+    console.log(taxNumber);
     var banAccountNumber = event.target.elements.banAccountNumber.value;
+    console.log(banAccountNumber);
     var email = event.target.elements.email.value;
+    console.log(email);
     var emailServer = event.target.elements.emailServer.value;
+    console.log(emailServer);
     var checkbox = event.target.elements.checkbox.value;
-    var endTime = event.target.elements.endTime.checked;
+    console.log(checkbox);
+    //var endTime = event.target.elements.endTime.checked;
   
     // state change
     const body = {
@@ -235,8 +232,8 @@ var state = {
          banAccountNumber:banAccountNumber,
          email: email,
          emailServer : emailServer,
-         checkbox: checkbox,
-         endTime: endTime,
+         //checkbox: checkbox,
+         //endTime: endTime,
     };
   
     const res = await fetch("/datas", {

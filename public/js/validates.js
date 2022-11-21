@@ -1,3 +1,5 @@
+
+
 const taxNumber = document.querySelector("#taxNumber");
 const btn = document.querySelector("#btn");
 const firmName = document.querySelector("#firm_name");
@@ -47,7 +49,7 @@ btn.onclick = () => {
   const emailServerInput = emailServer.value;
   const serverPatt = /^[a-z]+\.[a-z]{2,3}$/g;
   const emailServerResults = emailServerInput.match(serverPatt); 
-  const endTimeInput = endTime.value;
+  //const endTimeInput = endTime.value;
 
   //firmName validate section start); 
   if (firmNameInput === "") {
@@ -123,13 +125,13 @@ btn.onclick = () => {
     // e-mailSerever validate section end);
 
     // Szerződés kezdeti ideje validáció start;
-    if (endTimeInput  === "" || endTimeInput < currentDate) {
-           
-      alert(" A szolgáltatás kezdeti idejének napja nem lehet kisebb mint a mai nap :D ");
-    } else {
-      
-    }
-    console.log("endTime = " + endTimeInput);
-    // Szerződés kezdeti ideje validáció end;
+      if (endTimeInput  === "" || endTimeInput < currentDate) {
+          
+        alert(" A szolgáltatás kezdeti idejének napja nem lehet kisebb mint a mai nap :D ");
+      } else {
+     
+      }
+      console.log("endTime = " + endTimeInput);
+      //Szerződés kezdeti ideje validáció end;
 
 };
