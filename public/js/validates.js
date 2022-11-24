@@ -8,7 +8,7 @@ const locationName = document.querySelector("#work_location");
 const accountnumber = document.querySelector("#bank_acount_numer");
 const email = document.querySelector("#email");
 const emailServer = document.querySelector("#emailServer");
-const endTime = document.querySelector("#endTime");
+//const endTime = document.querySelector("#endTime");
 
 const date = new Date();
 

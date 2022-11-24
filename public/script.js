@@ -11,6 +11,7 @@ var state = {
   };
 
   function renderEditData() {
+    console.log("here2")
     if (state.editedId === "") {
       document.getElementById("edit-data").innerHTML = "";
       return;
@@ -118,14 +119,18 @@ var state = {
       }
   
       state.editedId = ""; 
-  
+
       // render
-      fetchAndRenderEditDatas();
-      renderEditData();
+       setTimeout(() => {
+        fetchAndRenderEditDatas();
+        renderEditData();
+       }, 500);
+       
     };
   }
   
   async function fetchAndRenderEditDatas() {
+    console.log("fetchAndRenderEditDatas")
     const response = await fetch('/datas');
     if (!response.ok) {
       alert("Szerver hiba");
@@ -182,12 +187,15 @@ var state = {
         });
   
         if (!response.ok) {
-          alert("Törlés sikertelen");
+          alert("Törlés sikertelen"); 
           return;
         }
   
         // render
-        fetchAndRenderEditDatas();
+        setTimeout(() => {
+          fetchAndRenderEditDatas();
+        }, 500);
+       
       };
     }
   }
@@ -243,14 +251,24 @@ var state = {
         "content-type": "application/json",
       },
     });
+
+    console.log("res",res)
   
     if (!res.ok) {
       alert("Létrehozás sikertelen");
       return;
     }
   
+    
     // render
-    fetchAndRenderEditDatas();
+    setTimeout(() => {
+      fetchAndRenderEditDatas();
+    }, 500);
+    
+    setTimeout(() => {
+      fetchAndRenderEditDatas();
+    }, 500);
+   
   };
   
   function uuidv4() {
